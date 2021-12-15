@@ -1,0 +1,1 @@
+{:main {:jvm game.jvm/register-methods}}

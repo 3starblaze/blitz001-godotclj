@@ -11,6 +11,7 @@ config_version=4
 [application]
 
 config/name="blitz001-godotclj"
+run/main_scene="res://scenes/StartMenu.tscn"
 config/icon="res://icon.png"
 
 [physics]

@@ -1,4 +1,4 @@
-{:paths #{"classes" "build" "godot-headers" "src/clojure" "resources"}
+{:paths #{"classes" "build" "godot-headers" "src" "resources"}
  :deps  {godotclj/godotclj {:local/root "godotclj"}
 
          nrepl/nrepl       {:mvn/version "0.8.3"}
