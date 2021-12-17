@@ -2,7 +2,7 @@
   (:require
    [godotclj.api :as api :refer [->object]]
    [godotclj.bindings.godot :as godot]
-   [godotclj.callbacks :as callbacks :refer [defer listen]]))
+   [godotclj.callbacks :as callbacks]))
 
 (def Input (->object "Input"))
 
@@ -81,8 +81,6 @@
 (def classes
   {"StartMenu"
    {:base       "Panel"
-    :create     (fn [& args] (println :create))
-    :destroy    (fn [& args] (println :destroy))
     :methods    {"_ready" (simplify-method main-ready)
                  "_onStartButtonPressed"
                  (simplify-method on-start-button-pressed)}}
