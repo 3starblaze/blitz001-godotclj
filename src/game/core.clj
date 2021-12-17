@@ -73,9 +73,6 @@
             this
             "_onFinishFlagAreaEntered"))
 
-(defn main-process [_ _]
-  nil)
-
 (defn simplify-method [f]
   (fn [instance method_data user_data n-args p-args]
     (apply f (->object instance)
@@ -87,7 +84,6 @@
     :create     (fn [& args] (println :create))
     :destroy    (fn [& args] (println :destroy))
     :methods    {"_ready" (simplify-method main-ready)
-                 "_process" (simplify-method main-process)
                  "_onStartButtonPressed"
                  (simplify-method on-start-button-pressed)}}
    "BaseLevel"
