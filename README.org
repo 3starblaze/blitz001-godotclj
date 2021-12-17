@@ -1,0 +1,24 @@
+#+TITLE: README
+
+* About
+This is a test game written in ~godotclj~ (that was initially written in ~ArcadiaGodot~).
+
+* Installation and Running
+Install:
+#+begin_src bash
+git submodule init
+git submodule update
+make
+#+end_src
+
+Run:
+#+begin_src bash
+./godotclj/scripts/godot.sh
+#+end_src
+* Bugs
+Whenever ~.connect~ is used this error is thrown:
+#+begin_src
+class godotclj.api.InstanceGc cannot be cast to class java.lang.Number (godotclj.api.InstanceGc is in unnamed module of loader 'app'; java.lang.Number is in module java.base of loader 'bootstrap'
+#+end_src
+
+This does not affect the game, although it can be a bit unwieldy to debug given how long the stack traces are.
