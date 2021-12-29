@@ -6,14 +6,17 @@ This is a test game written in ~godotclj~ (that was initially written in ~Arcadi
 * Installation and Running
 Install:
 #+begin_src bash
-git submodule init
-git submodule update
-make
+  mkdir lib
+  curl -L https://github.com/tristanstraub/godotclj/releases/download/v0.0.5/godotclj.jar -o lib/godotclj.jar
 #+end_src
 
 Run:
 #+begin_src bash
-./godotclj/scripts/godot.sh
+  # Import assets (only needs to be run once)
+  clj -M -e "(require 'godotclj.runner) (godotclj.runner/start \"--editor\" \"--quit\")"
+
+  # Run the game
+  clj -M -e "(require 'godotclj.runner) (godotclj.runner/start \"-v\")"
 #+end_src
 * Bugs
 Whenever ~.connect~ is used this error is thrown:
