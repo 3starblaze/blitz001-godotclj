@@ -1,5 +1,5 @@
 {:paths #{"classes" "build" "godot-headers" "src" "resources"}
- :deps  {godotclj/godotclj              {:local/root "lib/godotclj.jar"}
+ :deps  {godotclj/godotclj              {:local/root "godotclj"}
          ch.qos.logback/logback-classic {:mvn/version "1.2.3"}
 
          nrepl/nrepl                    {:mvn/version "0.8.3"}
