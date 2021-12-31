@@ -1,5 +1,5 @@
 {:paths #{"classes" "build" "godot-headers" "src" "resources"}
- :deps  {godotclj/godotclj              {:local/root "godotclj"}
+ :deps  {io.github.tristanstraub/godotclj {:mvn/version "0.0.6-SNAPSHOT"}
          ch.qos.logback/logback-classic {:mvn/version "1.2.3"}
 
          nrepl/nrepl                    {:mvn/version "0.8.3"}
