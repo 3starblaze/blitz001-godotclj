@@ -1,8 +1,7 @@
 (ns game.core
   (:require
    [godotclj.api :as api :refer [->object]]
-   [godotclj.bindings.godot :as godot]
-   [godotclj.callbacks :as callbacks]))
+   [godotclj.core]))
 
 (def Input (->object "Input"))
 
@@ -73,24 +72,12 @@
             this
             "_onFinishFlagAreaEntered"))
 
-(defn simplify-method [f]
-  (fn [instance method_data user_data n-args p-args]
-    (apply f (->object instance)
-           (seq (godot/->indexed-variant-array n-args p-args)))))
-
-(def classes
-  {"StartMenu"
-   {:base       "Panel"
-    :methods    {"_ready" (simplify-method main-ready)
-                 "_onStartButtonPressed"
-                 (simplify-method on-start-button-pressed)}}
-   "BaseLevel"
-   {:base "Node2D"
-    :methods {"_ready" (simplify-method level-ready)
-              "_physics_process" (simplify-method physics-process)
-              "_onFinishFlagAreaEntered"
-              (simplify-method on-finish-flag-area-entered)}}})
-
-(defn register-methods [p-handle]
-  (godot/register-classes p-handle classes)
-  (apply callbacks/register-callbacks p-handle (keys classes)))
+(def register-methods
+  (godotclj.core/gen-register-fn
+   {"StartMenu"
+    {:methods {"_ready" main-ready
+               "_onStartButtonPressed" on-start-button-pressed}}
+    "BaseLevel"
+    {:methods {"_ready" level-ready
+               "_physics_process" physics-process
+               "_onFinishFlagAreaEntered" on-finish-flag-area-entered}}}))
