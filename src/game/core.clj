@@ -63,9 +63,15 @@
     (println "All levels have been completed!")))
 
 (defn level-ready [this]
-  (godotclj.core/connect (.getNode this "FinishFlag")
-                         "body_entered"
-                         on-finish-flag-area-entered))
+  (let [node (.getNode this "FinishFlag")]
+    (godotclj.core/connect node
+                           "body_entered"
+                           on-finish-flag-area-entered)
+    ;;; Testing disconnect
+    (godotclj.core/disconnect node "body_entered")
+    (godotclj.core/connect node
+                           "body_entered"
+                           on-finish-flag-area-entered)))
 
 (def register-methods
   (godotclj.core/gen-register-fn
