@@ -49,15 +49,11 @@
   (.changeScene (.getTree (get-root))
                 (format "res://scenes/levels/Level%s.tscn" n)))
 
-(defn on-start-button-pressed [this]
-  (load-level 1))
-
 (defn main-ready [this]
   (println "Game has started")
-  (.connect (.getNode this "CenterContainer/StartButton")
-            "pressed"
-            this
-            "_onStartButtonPressed"))
+  (godotclj.core/connect (.getNode this "CenterContainer/StartButton")
+                         "pressed"
+                         (fn [_] (load-level 1))))
 
 (defn on-finish-flag-area-entered [_ _]
   (println "Level has been completed!")
@@ -67,17 +63,14 @@
     (println "All levels have been completed!")))
 
 (defn level-ready [this]
-  (.connect (.getNode this "FinishFlag")
-            "body_entered"
-            this
-            "_onFinishFlagAreaEntered"))
+  (godotclj.core/connect (.getNode this "FinishFlag")
+                         "body_entered"
+                         on-finish-flag-area-entered))
 
 (def register-methods
   (godotclj.core/gen-register-fn
    {"StartMenu"
-    {:methods {"_ready" main-ready
-               "_onStartButtonPressed" on-start-button-pressed}}
+    {:methods {"_ready" main-ready}}
     "BaseLevel"
     {:methods {"_ready" level-ready
-               "_physics_process" physics-process
-               "_onFinishFlagAreaEntered" on-finish-flag-area-entered}}}))
+               "_physics_process" physics-process}}}))
