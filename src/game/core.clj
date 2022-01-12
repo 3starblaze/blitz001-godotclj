@@ -71,12 +71,12 @@
     (godotclj.core/disconnect node "body_entered")
     (godotclj.core/connect node
                            "body_entered"
-                           on-finish-flag-area-entered)))
+                           on-finish-flag-area-entered)
+    (godotclj.core/add-hook this :physics-process physics-process)))
 
 (def register-methods
   (godotclj.core/gen-register-fn
    {"StartMenu"
     {:methods {"_ready" main-ready}}
     "BaseLevel"
-    {:methods {"_ready" level-ready
-               "_physics_process" physics-process}}}))
+    {:methods {"_ready" level-ready}}}))
