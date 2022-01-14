@@ -59,7 +59,7 @@
   (println "Level has been completed!")
   (if (<= (inc @current-level) max-level-count)
     (do (swap! current-level inc)
-        (load-level @current-level))
+        (godotclj.core/defer #(load-level @current-level)))
     (println "All levels have been completed!")))
 
 (defn level-ready [this]
@@ -72,7 +72,8 @@
     (godotclj.core/connect node
                            "body_entered"
                            on-finish-flag-area-entered)
-    (godotclj.core/add-hook this :physics-process physics-process)))
+    (godotclj.core/add-hook this :physics-process physics-process)
+    (godotclj.core/defer #(println "deferred print, hell yeah!"))))
 
 (def register-methods
   (godotclj.core/gen-register-fn
