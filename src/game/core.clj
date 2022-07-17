@@ -1,6 +1,7 @@
 (ns game.core
   (:require
    [godotclj.api :as api :refer [->object]]
+   [godotclj.connect :as connect]
    [godotclj.core]))
 
 (def Input (->object "Input"))
@@ -71,13 +72,16 @@
     (godotclj.core/disconnect node "body_entered")
     (godotclj.core/connect node
                            "body_entered"
-                           on-finish-flag-area-entered)
-    (godotclj.core/add-hook this :physics-process physics-process)
-    (godotclj.core/defer #(println "deferred print, hell yeah!"))))
+                           on-finish-flag-area-entered)))
 
-(def register-methods
-  (godotclj.core/gen-register-fn
-   {"StartMenu"
-    {:methods {"_ready" main-ready}}
-    "BaseLevel"
-    {:methods {"_ready" level-ready}}}))
+(defn init!
+  [p-handle]
+  (godotclj.core/init! p-handle)
+  (connect/init!)
+  (doto "StartMenu"
+    (godotclj.core/register-class! "Node2D")
+    (godotclj.core/register-method! "_ready" main-ready))
+  (doto "BaseLevel"
+    (godotclj.core/register-class! "Node2D")
+    (godotclj.core/register-method! "_ready" level-ready)
+    (godotclj.core/register-method! "_physics_process" physics-process)))

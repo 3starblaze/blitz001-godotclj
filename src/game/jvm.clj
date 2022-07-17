@@ -15,4 +15,4 @@
 (defn register-methods
   [p-handle]
   (future @repl)
-  (game.core/register-methods p-handle))
+  (game.core/init! p-handle))
