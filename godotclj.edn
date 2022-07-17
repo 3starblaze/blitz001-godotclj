@@ -1,1 +1,1 @@
-{:main {:jvm game.jvm/register-methods}}
+{:main {:jvm game.core/init!}}

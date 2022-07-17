@@ -1,0 +1,3 @@
+[submodule "godotclj"]
+	path = godotclj
+	url = git@github.com:3starblaze/godotclj.git

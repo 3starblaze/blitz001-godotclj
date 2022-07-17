@@ -1,6 +1,7 @@
 (ns game.core
   (:require
    [godotclj.api :as api :refer [->object]]
+   [godotclj.connect :as connect]
    [godotclj.core]))
 
 (def Input (->object "Input"))
@@ -49,35 +50,38 @@
   (.changeScene (.getTree (get-root))
                 (format "res://scenes/levels/Level%s.tscn" n)))
 
-(defn on-start-button-pressed [this]
-  (load-level 1))
-
 (defn main-ready [this]
   (println "Game has started")
-  (.connect (.getNode this "CenterContainer/StartButton")
-            "pressed"
-            this
-            "_onStartButtonPressed"))
+  (godotclj.core/connect (.getNode this "CenterContainer/StartButton")
+                         "pressed"
+                         (fn [_] (load-level 1))))
 
 (defn on-finish-flag-area-entered [_ _]
   (println "Level has been completed!")
   (if (<= (inc @current-level) max-level-count)
     (do (swap! current-level inc)
-        (load-level @current-level))
+        (godotclj.core/defer #(load-level @current-level)))
     (println "All levels have been completed!")))
 
 (defn level-ready [this]
-  (.connect (.getNode this "FinishFlag")
-            "body_entered"
-            this
-            "_onFinishFlagAreaEntered"))
+  (let [node (.getNode this "FinishFlag")]
+    (godotclj.core/connect node
+                           "body_entered"
+                           on-finish-flag-area-entered)
+    ;;; Testing disconnect
+    (godotclj.core/disconnect node "body_entered")
+    (godotclj.core/connect node
+                           "body_entered"
+                           on-finish-flag-area-entered)))
 
-(def register-methods
-  (godotclj.core/gen-register-fn
-   {"StartMenu"
-    {:methods {"_ready" main-ready
-               "_onStartButtonPressed" on-start-button-pressed}}
-    "BaseLevel"
-    {:methods {"_ready" level-ready
-               "_physics_process" physics-process
-               "_onFinishFlagAreaEntered" on-finish-flag-area-entered}}}))
+(defn init!
+  [p-handle]
+  (godotclj.core/init! p-handle)
+  (connect/init!)
+  (doto "StartMenu"
+    (godotclj.core/register-class! "Node2D")
+    (godotclj.core/register-method! "_ready" main-ready))
+  (doto "BaseLevel"
+    (godotclj.core/register-class! "Node2D")
+    (godotclj.core/register-method! "_ready" level-ready)
+    (godotclj.core/register-method! "_physics_process" physics-process)))
